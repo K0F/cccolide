@@ -13,7 +13,7 @@ int main(int *argc,char *argv[]) {
   char buf[BUFSIZE];
   FILE *fp;
 
-  if ((fp = _popen(cmd, "r")) == NULL) {
+  if ((fp = popen(cmd, "r")) == NULL) {
     printf("Error opening pipe!\n");
     return -1;
   }
@@ -23,7 +23,7 @@ int main(int *argc,char *argv[]) {
     printf("OUTPUT: %s", buf);
   }
 
-  if(_pclose(fp))  {
+  if(pclose(fp))  {
     printf("Command not found or exited with error status\n");
     return -1;
   }
