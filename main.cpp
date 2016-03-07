@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <pathsetup.h>
 
 #define BUFSIZE 128
 
@@ -8,7 +9,8 @@
 #endif
 
 int main(int *argc,char *argv[]) {
-	char *cmd = "C:/Supercollider/Supercollider_findModules/Install/SuperCollider/sclang";
+	char *cmd = getSclangExePath(); 
+          //"C:/Supercollider/Supercollider_findModules/Install/SuperCollider/sclang";
 
   char buf[BUFSIZE];
   FILE *fp;
