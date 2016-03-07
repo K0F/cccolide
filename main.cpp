@@ -1,21 +1,27 @@
 #include <stdio.h>
-#include <pathsetup.h>
+#include <iostream>
+#include "pathsetup.h"
+#include <string.h> 
 
 #define BUFSIZE 128
 
-#if WINDOWS
+#if WIN32
 #define popen _popen
 #define pclose _pclose
 #endif
 
+using namespace std;
+
 int main(int *argc,char *argv[]) {
-	char *cmd = getSclangExePath(); 
-          //"C:/Supercollider/Supercollider_findModules/Install/SuperCollider/sclang";
+  string cmd = string(getSclangExePath());
+  string arguments = string(" start.scd");
+  cmd += arguments;
+  
 
   char buf[BUFSIZE];
   FILE *fp;
 
-  if ((fp = popen(cmd, "r")) == NULL) {
+  if ((fp = popen(cmd.c_str(), "r")) == NULL) {
     printf("Error opening pipe!\n");
     return -1;
   }
