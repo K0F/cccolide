@@ -2,6 +2,11 @@
 
 #define BUFSIZE 128
 
+#if WINDOWS
+#define popen _popen
+#define pclose _pclose
+#endif
+
 int main(int *argc,char *argv[]) {
 	char *cmd = "C:/Supercollider/Supercollider_findModules/Install/SuperCollider/sclang";
 
