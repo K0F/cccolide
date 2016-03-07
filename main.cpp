@@ -3,7 +3,7 @@
 
 #define BUFSIZE 128
 
-#if WINDOWS
+#if WIN32
 #define popen _popen
 #define pclose _pclose
 #endif
