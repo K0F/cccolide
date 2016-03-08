@@ -2,6 +2,16 @@ project(test)
 
 cmake_minimum_required( VERSION 3.4.0 )
 
+include(ExternalProject)
+
+ExternalProject_Add(oscpack
+  GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
+  GIT_TAG "master"
+  UPDATE_COMMAND ""
+  INSTALL_COMMAND ""
+  )
+
+export(PACKAGE oscpack)
 
 SET(EXECUTABLE_NAME "aaa")
 
