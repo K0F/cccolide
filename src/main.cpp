@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <iostream>
-#include "pathsetup.h"
 #include <string.h> 
 
 #define BUFSIZE 128
@@ -13,7 +12,7 @@
 using namespace std;
 
 int main(int *argc,char *argv[]) {
-  string cmd = string(getSclangExePath());
+  string cmd = "sclang";
   string arguments = string(" start.scd");
   cmd += arguments;
   

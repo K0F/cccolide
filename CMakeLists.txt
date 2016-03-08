@@ -1,19 +1,21 @@
 project(test)
 
-cmake_minimum_required( VERSION 2.8.11 )
+cmake_minimum_required( VERSION 3.4.0 )
+
+
+SET(EXECUTABLE_NAME "aaa")
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	SET(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/Install" CACHE STRING "Cmake install path" FORCE)
 endif()
 
-SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Modules)
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Modules)
 
 FIND_PACKAGE(Sc)
 FIND_PACKAGE(ScLang)
 
+include_directories( "${CMAKE_SOURCE_DIR}/include/" )
 
-add_definitions( -DSETUPPATH_LIBINTERFACE=${SCLANG_EXE} )
-configure_file( pathsetup_config.h.in "${CMAKE_SOURCE_DIR}/pathsetup.h") 
-include_directories( ${CMAKE_SOURCE_DIR} )
+add_executable(${EXECUTABLE_NAME} "src/main.cpp")
 
-add_executable(aaa main.cpp)
+add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/assets/start.scd ${CMAKE_BINARY_DIR}/)
