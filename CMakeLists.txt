@@ -2,25 +2,48 @@ project(test)
 
 cmake_minimum_required( VERSION 3.4.0 )
 
+# Set the build type if it isn't already
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
 include(ExternalProject)
 
 ExternalProject_Add(oscpack
   GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
   GIT_TAG "origin/master"
 PREFIX "externals"
-  #SOURCE_DIR "${CMAKE_SOURCE_DIR}/oscpack"
-  #BINARY_DIR "${CMAKE_BUILD_DIR}/oscpack"
   UPDATE_COMMAND ""
+  EXCLUDE_FROM_MAIN "0"
   )
+  ExternalProject_Get_Property(oscpack source_dir)
+  ExternalProject_Get_Property(oscpack binary_dir)
+
+  MESSAGE(STATUS "ok got oscpack ${source_dir}")
+  MESSAGE(STATUS "ok got oscpack ${binary_dir}")
+
+  include_directories(
+  "${source_dir}/osc"
+"${source_dir}/ip"
+)
+
 
 
 ExternalProject_Add(cprocessing
   GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
   GIT_TAG "origin/master"
   PREFIX "externals"
-  #SOURCE_DIR "${CMAKE_SOURCE_DIR}/cprocessing"
-  #BINARY_DIR "${CMAKE_BUILD_DIR}/cprocessing"
   UPDATE_COMMAND ""
+  EXCLUDE_FROM_MAIN "0"
+)
+ExternalProject_Get_Property(cprocessing source_dir)
+ExternalProject_Get_Property(cprocessing binary_dir)
+
+MESSAGE(STATUS "ok got cprocessing ${source_dir}")
+MESSAGE(STATUS "ok got cprocessing ${binary_dir}")
+
+  include_directories(
+  "${source_dir}/include"
 )
 
 # export(PACKAGE oscpack)

@@ -1,3 +1,4 @@
+#include "cprocessing.hpp"
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
