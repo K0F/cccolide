@@ -56,11 +56,7 @@ endif()
 find_package(OpenGL REQUIRED)
 # find_package(GLUT REQUIRED)
 # include_directories( ${OPENGL_INCLUDE_DIRS}  ${freeglut_INCLUDE_DIR} )
-include_directories(
-  "${CPROCESSING_INCLUDE_DIR}"
-  "${OPENGL_INCLUDE_DIRS}"
-  "${freeglut_INCLUDE_DIR}"
-)
+
 
 link_directories(
 "${CPROCESSING_BUILD_DIR}"
@@ -72,8 +68,9 @@ add_dependencies(cccolider cprocessing)
 add_dependencies(cprocessing freeglut)
 
 target_include_directories(cccolider PUBLIC
-  "${CMAKE_SOURCE_DIR}/include/"
   "${CPROCESSING_INCLUDE_DIR}"
+    "${OPENGL_INCLUDE_DIRS}"
+    "${freeglut_INCLUDE_DIR}"
 )
 
 
