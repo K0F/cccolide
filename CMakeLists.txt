@@ -16,7 +16,7 @@ ExternalProject_Add(cprocessing
  PREFIX "externals"
  UPDATE_COMMAND ""
  TIMEOUT 10
- ALWAYS 0
+ ALWAYS 1
 )
 SET(CPROCESSING_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/cprocessing/include/")
 SET(CPROCESSING_BUILD_DIR "${CMAKE_BUILD_DIR}/externals/src/cprocessing-build/")
@@ -30,13 +30,14 @@ ExternalProject_Add(freeglut
  PREFIX "externals"
  UPDATE_COMMAND ""
  TIMEOUT 10
- ALWAYS 0
+ ALWAYS 1
 )
-#SET(freeglut_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/freeglut/include/GL")
-#SET(freeglut_BUILD_DIR "${CMAKE_BUILD_DIR}/externals/src/freeglut-build/lib")
-#SET(GLUT_ROOT_PATH ${freeglut_INCLUDE_DIR})
-#MESSAGE(STATUS "ok got freeglut freeglut_INCLUDE_DIR ${freeglut_INCLUDE_DIR}")
-#MESSAGE(STATUS "ok got freeglut freeglut_BUILD_DIR ${freeglut_LIBRARY_DIR}")
+SET(freeglut_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/freeglut/include/GL")
+SET(freeglut_BUILD_DIR "${CMAKE_BUILD_DIR}/externals/src/freeglut-build/lib")
+
+# SET(GLUT_ROOT_PATH ${freeglut_INCLUDE_DIR})
+MESSAGE(STATUS "ok got freeglut freeglut_INCLUDE_DIR ${freeglut_INCLUDE_DIR}")
+MESSAGE(STATUS "ok got freeglut freeglut_BUILD_DIR ${freeglut_BUILD_DIR}")
 
 
 
@@ -49,15 +50,17 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 
 # LIST(APPEND ${CMAKE_SOURCE_DIR}/Modules CMAKE_MODULE_PATH )
-LIST(APPEND ${CMAKE_SOURCE_DIR}/Modules ${CMAKE_MODULE_PATH} CMAKE_MODULE_PATH)
+# LIST(APPEND ${CMAKE_SOURCE_DIR}/Modules ${CMAKE_MODULE_PATH} CMAKE_MODULE_PATH)
 
 
 find_package(OpenGL REQUIRED)
-find_package(GLUT REQUIRED)
-include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIR} )
+# find_package(GLUT REQUIRED)
+include_directories( ${OPENGL_INCLUDE_DIRS}  ${freeglut_INCLUDE_DIR} )
 
-
-link_directories("${CPROCESSING_BUILD_DIR}")
+link_directories(
+"${CPROCESSING_BUILD_DIR}"
+"${freeglut_BUILD_DIR}"
+)
 
 add_executable(cccolider "src/main.cpp")
 add_dependencies(cccolider cprocessing)
@@ -67,7 +70,25 @@ target_include_directories(cccolider PUBLIC
   "${CMAKE_SOURCE_DIR}/include/"
   "${CPROCESSING_INCLUDE_DIR}"
 )
-target_link_libraries(cccolider "libcprocessing.a" ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
+
+
+if(UNIX)
+target_link_libraries(cccolider
+X11
+Xext
+Xmu
+Xxf86vm
+Xi
+)
+endif()
+
+
+target_link_libraries(cccolider
+  ${OPENGL_LIBRARIES}
+  "libcprocessing.a"
+  "libglut.a"
+)
+
 
 
 # add_custom_command(OUTPUT libcprocessing.a ${cprocessing_src})

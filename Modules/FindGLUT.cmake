@@ -49,7 +49,7 @@ if (WIN32)
   PATHS  ${CMAKE_BINARY_DIR}/externals/src/freeglut/include/GL )
   find_library( GLUT_glut_LIBRARY NAMES glut glut32 freeglut
     PATHS
-  ${CMAKE_BINARY_DIR}/externals/src/freeglut-build/lib 
+  ${CMAKE_BINARY_DIR}/externals/src/freeglut-build/lib
     ${OPENGL_LIBRARY_DIR}
     ${GLUT_ROOT_PATH}/Release
     )
