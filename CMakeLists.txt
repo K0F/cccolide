@@ -18,7 +18,7 @@ ExternalProject_Add(cprocessing
  TIMEOUT 10
  ALWAYS 1
 )
-SET(CPROCESSING_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/cprocessing/include/")
+SET(CPROCESSING_INCLUDE_DIR "${CMAKE_BUILD_DIR}/externals/src/cprocessing/include/")
 SET(CPROCESSING_BUILD_DIR "${CMAKE_BUILD_DIR}/externals/src/cprocessing-build/")
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_INCLUDE_DIR ${CPROCESSING_INCLUDE_DIR}")
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_BUILD_DIR ${CPROCESSING_BUILD_DIR}")
