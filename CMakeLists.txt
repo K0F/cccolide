@@ -56,7 +56,7 @@ endif()
 find_package(OpenGL REQUIRED)
 # find_package(GLUT REQUIRED)
 # include_directories( ${OPENGL_INCLUDE_DIRS}  ${freeglut_INCLUDE_DIR} )
-include_directories( ${freeglut_INCLUDE_DIR} )
+include_directories( ${OPENGL_INCLUDE_DIRS} ${freeglut_INCLUDE_DIR} )
 
 link_directories(
 "${CPROCESSING_BUILD_DIR}"
@@ -91,7 +91,6 @@ target_link_libraries(cccolider
 endif()
 
 if(WIN32)
-
   target_link_libraries(cccolider
     ${OPENGL_LIBRARIES}
     "cprocessing.lib"
