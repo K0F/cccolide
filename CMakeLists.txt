@@ -6,12 +6,25 @@ include(ExternalProject)
 
 ExternalProject_Add(oscpack
   GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
-  GIT_TAG "master"
+  GIT_TAG "origin/master"
+PREFIX "externals"
+  #SOURCE_DIR "${CMAKE_SOURCE_DIR}/oscpack"
+  #BINARY_DIR "${CMAKE_BUILD_DIR}/oscpack"
   UPDATE_COMMAND ""
-  INSTALL_COMMAND ""
   )
 
-export(PACKAGE oscpack)
+
+ExternalProject_Add(cprocessing
+  GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
+  GIT_TAG "origin/master"
+  PREFIX "externals"
+  #SOURCE_DIR "${CMAKE_SOURCE_DIR}/cprocessing"
+  #BINARY_DIR "${CMAKE_BUILD_DIR}/cprocessing"
+  UPDATE_COMMAND ""
+)
+
+# export(PACKAGE oscpack)
+# export(PACKAGE cprocessing)
 
 SET(EXECUTABLE_NAME "aaa")
 
@@ -21,11 +34,11 @@ endif()
 
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Modules)
 
-FIND_PACKAGE(Sc)
-FIND_PACKAGE(ScLang)
+# FIND_PACKAGE(Sc)
+# FIND_PACKAGE(ScLang)
 
 include_directories( "${CMAKE_SOURCE_DIR}/include/" )
 
 add_executable(${EXECUTABLE_NAME} "src/main.cpp")
 
-add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/assets/start.scd ${CMAKE_BINARY_DIR}/)
+# add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/assets/start.scd)

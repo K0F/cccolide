@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include <iostream>
-#include <string.h> 
+#include <stdio.h>
+#include <string.h>
 
 #define BUFSIZE 128
 
@@ -11,11 +11,10 @@
 
 using namespace std;
 
-int main(int *argc,char *argv[]) {
+int main(int *argc, char *argv[]) {
   string cmd = "sclang";
-  string arguments = string(" start.scd");
+  string arguments = string(" -r -s start.scd");
   cmd += arguments;
-  
 
   char buf[BUFSIZE];
   FILE *fp;
@@ -30,7 +29,7 @@ int main(int *argc,char *argv[]) {
     printf("OUTPUT: %s", buf);
   }
 
-  if(pclose(fp))  {
+  if (pclose(fp)) {
     printf("Command not found or exited with error status\n");
     return -1;
   }
