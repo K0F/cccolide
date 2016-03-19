@@ -18,8 +18,8 @@ ExternalProject_Add(cprocessing
  TIMEOUT 10
  ALWAYS 1
 )
-SET(CPROCESSING_INCLUDE_DIR "${CMAKE_BUILD_DIR}/externals/src/cprocessing/include/")
-SET(CPROCESSING_BUILD_DIR "${CMAKE_BUILD_DIR}/externals/src/cprocessing-build/")
+SET(CPROCESSING_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing/include/")
+SET(CPROCESSING_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing-build/")
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_INCLUDE_DIR ${CPROCESSING_INCLUDE_DIR}")
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_BUILD_DIR ${CPROCESSING_BUILD_DIR}")
 
@@ -33,7 +33,7 @@ ExternalProject_Add(freeglut
  ALWAYS 1
 )
 SET(freeglut_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/freeglut/include/GL")
-SET(freeglut_BUILD_DIR "${CMAKE_BUILD_DIR}/externals/src/freeglut-build/lib")
+SET(freeglut_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/freeglut-build/lib")
 
 # SET(GLUT_ROOT_PATH ${freeglut_INCLUDE_DIR})
 MESSAGE(STATUS "ok got freeglut freeglut_INCLUDE_DIR ${freeglut_INCLUDE_DIR}")
