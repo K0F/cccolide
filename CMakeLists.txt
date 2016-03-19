@@ -9,28 +9,6 @@ endif()
 
 include(ExternalProject)
 
-#ExternalProject_Add(oscpack
-#  GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
-#  GIT_TAG "origin/master"
-# PREFIX "externals"
-#  UPDATE_COMMAND ""
-#  EXCLUDE_FROM_MAIN "0"
-#  )
-#  ExternalProject_Get_Property(oscpack source_dir)
-#  ExternalProject_Get_Property(oscpack binary_dir)
-
-#  MESSAGE(STATUS "ok got oscpack ${source_dir}")
-#  MESSAGE(STATUS "ok got oscpack ${binary_dir}")
-
-#  include_directories(
-#  "${source_dir}/osc"
-#"${source_dir}/ip"
-#)
-
-
-# execute_process(COMMAND git clone "https://github.com/K0F/cprocessing.git" "${CMAKE_SOURCE_DIR}/cprocessing")
-
-
 
 ExternalProject_Add(cprocessing
  GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
@@ -38,14 +16,29 @@ ExternalProject_Add(cprocessing
  PREFIX "externals"
  UPDATE_COMMAND ""
  TIMEOUT 10
- ALWAYS 1
+ ALWAYS 0
 )
-
 SET(CPROCESSING_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/cprocessing/include/")
 SET(CPROCESSING_BUILD_DIR "${CMAKE_BUILD_DIR}/externals/src/cprocessing-build/")
-
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_INCLUDE_DIR ${CPROCESSING_INCLUDE_DIR}")
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_BUILD_DIR ${CPROCESSING_BUILD_DIR}")
+
+
+ExternalProject_Add(freeglut
+ GIT_REPOSITORY "https://github.com/K0F/freeglut.git"
+ GIT_TAG "origin/master"
+ PREFIX "externals"
+ UPDATE_COMMAND ""
+ TIMEOUT 10
+ ALWAYS 0
+)
+#SET(freeglut_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/freeglut/include/GL")
+#SET(freeglut_BUILD_DIR "${CMAKE_BUILD_DIR}/externals/src/freeglut-build/lib")
+#SET(GLUT_ROOT_PATH ${freeglut_INCLUDE_DIR})
+#MESSAGE(STATUS "ok got freeglut freeglut_INCLUDE_DIR ${freeglut_INCLUDE_DIR}")
+#MESSAGE(STATUS "ok got freeglut freeglut_BUILD_DIR ${freeglut_LIBRARY_DIR}")
+
+
 
 # add_subdirectory(cprocessing)
 # add_subdirectory(src)
@@ -55,22 +48,26 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	SET(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/Install" CACHE STRING "Cmake install path" FORCE)
 endif()
 
-# LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Modules)
+# LIST(APPEND ${CMAKE_SOURCE_DIR}/Modules CMAKE_MODULE_PATH )
+LIST(APPEND ${CMAKE_SOURCE_DIR}/Modules ${CMAKE_MODULE_PATH} CMAKE_MODULE_PATH)
+
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
-include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
+include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIR} )
 
 
 link_directories("${CPROCESSING_BUILD_DIR}")
 
 add_executable(cccolider "src/main.cpp")
 add_dependencies(cccolider cprocessing)
+add_dependencies(cprocessing freeglut)
+
 target_include_directories(cccolider PUBLIC
   "${CMAKE_SOURCE_DIR}/include/"
   "${CPROCESSING_INCLUDE_DIR}"
 )
-target_link_libraries(cccolider "libcprocessing.a" ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+target_link_libraries(cccolider "libcprocessing.a" ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
 
 
 # add_custom_command(OUTPUT libcprocessing.a ${cprocessing_src})
