@@ -7,8 +7,10 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-include(ExternalProject)
 
+### EXTERNAL PROJECTS #######################################################################
+
+include(ExternalProject)
 
 ExternalProject_Add(cprocessing
  GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
@@ -41,31 +43,31 @@ MESSAGE(STATUS "ok got freeglut freeglut_BUILD_DIR ${freeglut_BUILD_DIR}")
 
 
 
-# add_subdirectory(cprocessing)
-# add_subdirectory(src)
-
-
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	SET(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/Install" CACHE STRING "Cmake install path" FORCE)
 endif()
 
-# LIST(APPEND ${CMAKE_SOURCE_DIR}/Modules CMAKE_MODULE_PATH )
-# LIST(APPEND ${CMAKE_SOURCE_DIR}/Modules ${CMAKE_MODULE_PATH} CMAKE_MODULE_PATH)
-
+### OPENGL MODULE FIND #######################################################################
 
 find_package(OpenGL REQUIRED)
 # find_package(GLUT REQUIRED)
-# include_directories( ${OPENGL_INCLUDE_DIRS}  ${freeglut_INCLUDE_DIR} )
+
+
+### SET TARGETS (INCLUDING ORDER) ############################################################
 
 
 link_directories(
-"${CPROCESSING_BUILD_DIR}"
-"${freeglut_BUILD_DIR}"
+  "${CPROCESSING_BUILD_DIR}"
+  "${freeglut_BUILD_DIR}"
 )
 
 add_executable(cccolider "src/main.cpp")
 add_dependencies(cccolider cprocessing)
 add_dependencies(cprocessing freeglut)
+
+
+### LINKING ############################################################
+
 
 target_include_directories(cccolider PUBLIC
   "${CPROCESSING_INCLUDE_DIR}"
@@ -74,22 +76,23 @@ target_include_directories(cccolider PUBLIC
 )
 
 
+# LINUX LIBRARIES
 if(UNIX)
-target_link_libraries(cccolider
-X11
-Xext
-Xmu
-Xxf86vm
-Xi
-)
-
-target_link_libraries(cccolider
-  ${OPENGL_LIBRARIES}
-  "libcprocessing.a"
-  "libglut.a"
+    target_link_libraries(cccolider
+    glfw
+    X11
+    Xext
+    Xmu
+    Xxf86vm
+    Xi
+    Xrandr
+    ${OPENGL_LIBRARIES}
+    "libcprocessing.a"
+    "libglut.a"
 )
 endif()
 
+# WINDOWS LIBRARIES
 if(WIN32)
   target_link_libraries(cccolider
     ${OPENGL_LIBRARIES}
@@ -100,9 +103,4 @@ endif()
 
 
 
-# add_custom_command(OUTPUT libcprocessing.a ${cprocessing_src})
-# add_custom_command(OUTPUT cccolide "src/main.cpp" ALL DEPENDS cprocessing)
-
-# add_executable(${EXECUTABLE_NAME} "src/main.cpp" "${CMAKE_SOURCE_DIR}/cprocessing/include/cprocessing.hpp")
-
-# add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/assets/start.scd)
+### INSTALL (TODO) ############################################################
