@@ -15,9 +15,9 @@ include(ExternalProject)
 
 ExternalProject_Add(oscpack
  GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
- GIT_TAG "origin/master"
+ GIT_TAG "master"
  PREFIX "externals"
- UPDATE_COMMAND ""
+ UPDATE_DISCONNECTED 0
  TIMEOUT 10
  ALWAYS 1
 )
@@ -30,9 +30,9 @@ MESSAGE(STATUS "ok got cprocessing OSCPACK_BUILD_DIR ${OSCPACK_BUILD_DIR}")
 
 ExternalProject_Add(cprocessing
  GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
- GIT_TAG "origin/master"
+ GIT_TAG "master"
  PREFIX "externals"
- UPDATE_COMMAND ""
+ UPDATE_DISCONNECTED 0
  TIMEOUT 10
  ALWAYS 1
 )
@@ -44,9 +44,9 @@ MESSAGE(STATUS "ok got cprocessing CPROCESSING_BUILD_DIR ${CPROCESSING_BUILD_DIR
 
 ExternalProject_Add(freeglut
  GIT_REPOSITORY "https://github.com/K0F/freeglut.git"
- GIT_TAG "origin/master"
+ GIT_TAG "master"
  PREFIX "externals"
- UPDATE_COMMAND ""
+ UPDATE_DISCONNECTED 0
  TIMEOUT 10
  ALWAYS 1
 )

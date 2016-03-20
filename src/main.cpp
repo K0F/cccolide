@@ -1,7 +1,8 @@
 #include "cprocessing.hpp"
 #include <iostream>
+#include <sstream>
 #include <stdio.h>
-#include <string.h>
+#include <string>
 
 #include "ip/UdpSocket.h"
 #include "osc/OscOutboundPacketStream.h"
@@ -27,7 +28,7 @@ char buf[BUFSIZE];
 int start() {
 
   string cmd = "sclang";
-  string arguments = string(" -s -r start.scd");
+  string arguments = string(" start.scd");
   cmd += arguments;
 
   if ((fp = popen(cmd.c_str(), "w")) == NULL) {
@@ -63,11 +64,13 @@ int close() {
 
 int fc;
 bool hit;
+string console;
 
 void setup() {
   size(600, 400, "cccolider");
   start();
   fc = 0;
+  console = "";
   // close();
 }
 
@@ -85,6 +88,10 @@ void draw() {
     // Do whatever you want here...
     printf("OUTPUT: %s", buf);
   }
+
+  text("CCColider", 30, 10);
+  text("Welcome!", 30, 22);
+  text("by kof", 30, 34);
 
   if (fc % 100 == 0) {
     evaluate("().play;");
