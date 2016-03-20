@@ -27,7 +27,7 @@ char buf[BUFSIZE];
 int start() {
 
   string cmd = "sclang";
-  string arguments = string(" start.scd");
+  string arguments = string(" -s -r start.scd");
   cmd += arguments;
 
   if ((fp = popen(cmd.c_str(), "w")) == NULL) {
@@ -65,7 +65,7 @@ int fc;
 bool hit;
 
 void setup() {
-  size(640, 420, "cccolider");
+  size(600, 400, "cccolider");
   start();
   fc = 0;
   // close();
@@ -88,5 +88,6 @@ void draw() {
 
   if (fc % 100 == 0) {
     evaluate("().play;");
+    evaluate("'bang!'.postln;");
   }
 }
