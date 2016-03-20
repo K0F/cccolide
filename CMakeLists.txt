@@ -106,7 +106,8 @@ target_include_directories(cccolider PUBLIC
   ${CPROCESSING_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIRS}
   ${freeglut_INCLUDE_DIR}
-  ${OSCPACK_INCLUDE_DIR}
+  "${OSCPACK_INCLUDE_DIR}/osc"
+  "${OSCPACK_INCLUDE_DIR}/ip"
   )
 
 
