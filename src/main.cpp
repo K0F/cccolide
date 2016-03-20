@@ -35,13 +35,6 @@ int start() {
     return -1;
   }
 
-  /*
-      while (fgets(buf, BUFSIZE, fp) != NULL) {
-        // Do whatever you want here...
-        printf("OUTPUT: %s", buf);
-      }
-  */
-
   return 0;
 }
 
@@ -69,6 +62,7 @@ int close() {
 // void keyPressed() { write(fp[0], "().play;"); }
 
 int fc;
+bool hit;
 
 void setup() {
   size(640, 420, "cccolider");
@@ -78,7 +72,12 @@ void setup() {
 }
 
 void draw() {
-  background(255);
+  if (fc % 100 == 0) {
+    background(255);
+  } else {
+    background(0);
+  }
+  stroke(255);
   line(fc++, 0, fc, height);
   fc = fc % width;
 
