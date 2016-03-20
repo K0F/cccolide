@@ -1,16 +1,19 @@
 # cccolide
 supercollider + cprocessing combo
 
-## dependencies
-# required:
+# dependencies
+## required:
 * GXX compiler
 * cmake
 * git (in system path)
 * supercollider (binaries)
 
-# automagically build from source:
+## automagically build from source:
 * GLUT
 * GL (not fully automated)
 * cprocessing
 * oscpack
 * Openobject Quark
+
+
+_developed by kof_
