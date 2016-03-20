@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <string>
 
-#include "ip/UdpSocket.h"
-#include "osc/OscOutboundPacketStream.h"
+#include "OscOutboundPacketStream.h"
+#include "UdpSocket.h"
 
 #define BUFSIZE 128
 
@@ -84,7 +84,7 @@ void draw() {
   line(fc++, 0, fc, height);
   fc = fc % width;
 
-  if(fgets(buf, BUFSIZE, fp) != NULL){
+  if (fgets(buf, BUFSIZE, fp) != NULL) {
     printf("OUTPUT: %s", buf);
   }
 
@@ -93,7 +93,7 @@ void draw() {
 
   text("CCColider", 30, 30);
   text("Welcome!", 30, 45);
-  text(frames.c_str(),30,60);
+  text(frames.c_str(), 30, 60);
 
   if (fc % 100 == 0) {
     evaluate("().play;");
