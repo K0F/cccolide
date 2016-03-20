@@ -3,7 +3,15 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "ip/UdpSocket.h"
+#include "osc/OscOutboundPacketStream.h"
+
 #define BUFSIZE 128
+
+#define ADDRESS "127.0.0.1"
+#define PORT 57120
+
+#define OUTPUT_BUFFER_SIZE 1024
 
 #if WIN32
 #define popen _popen
@@ -19,38 +27,67 @@ char buf[BUFSIZE];
 int start() {
 
   string cmd = "sclang";
-  string arguments = string(" -r -s");
+  string arguments = string(" start.scd");
   cmd += arguments;
 
-  if ((fp = popen(cmd.c_str(), "r")) == NULL) {
+  if ((fp = popen(cmd.c_str(), "w")) == NULL) {
     printf("Error opening pipe!\n");
     return -1;
   }
 
   /*
-    while (fgets(buf, BUFSIZE, fp) != NULL) {
-      // Do whatever you want here...
-      printf("OUTPUT: %s", buf);
-    }
-
-    if (pclose(fp)) {
-      printf("Command not found or exited with error status\n");
-      return -1;
-    }
+      while (fgets(buf, BUFSIZE, fp) != NULL) {
+        // Do whatever you want here...
+        printf("OUTPUT: %s", buf);
+      }
   */
+
   return 0;
 }
 
+int evaluate(string input) {
+
+  osc::UdpTransmitSocket transmitSocket(osc::IpEndpointName(ADDRESS, PORT));
+
+  char buffer[OUTPUT_BUFFER_SIZE];
+  osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
+
+  p << osc::BeginBundleImmediate << osc::BeginMessage("/oo_i")
+    << strdup(input.c_str()) << osc::EndMessage << osc::EndBundle;
+
+  transmitSocket.Send(p.Data(), p.Size());
+}
+
+int close() {
+
+  if (pclose(fp)) {
+    printf("Command not found or exited with error status\n");
+    return -1;
+  }
+}
+
+// void keyPressed() { write(fp[0], "().play;"); }
+
+int fc;
+
 void setup() {
-  size(320, 240);
+  size(640, 420, "cccolider");
   start();
+  fc = 0;
+  // close();
 }
 
 void draw() {
   background(255);
+  line(fc++, 0, fc, height);
+  fc = fc % width;
 
   if (fgets(buf, BUFSIZE, fp) != NULL) {
     // Do whatever you want here...
     printf("OUTPUT: %s", buf);
+  }
+
+  if (fc % 100 == 0) {
+    evaluate("().play;");
   }
 }

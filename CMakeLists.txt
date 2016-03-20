@@ -12,6 +12,22 @@ endif()
 
 include(ExternalProject)
 
+
+ExternalProject_Add(oscpack
+ GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
+ GIT_TAG "origin/master"
+ PREFIX "externals"
+ UPDATE_COMMAND ""
+ TIMEOUT 10
+ ALWAYS 1
+)
+SET(OSCPACK_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack/")
+SET(OSCPACK_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack-build/")
+MESSAGE(STATUS "ok got cprocessing OSCPACK_INCLUDE_DIR ${OSCPACK_INCLUDE_DIR}")
+MESSAGE(STATUS "ok got cprocessing OSCPACK_BUILD_DIR ${OSCPACK_BUILD_DIR}")
+
+
+
 ExternalProject_Add(cprocessing
  GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
  GIT_TAG "origin/master"
@@ -41,6 +57,9 @@ SET(freeglut_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/freeglut-build/lib")
 MESSAGE(STATUS "ok got freeglut freeglut_INCLUDE_DIR ${freeglut_INCLUDE_DIR}")
 MESSAGE(STATUS "ok got freeglut freeglut_BUILD_DIR ${freeglut_BUILD_DIR}")
 
+###################################################################################################
+###################################################################################################
+
 
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -59,9 +78,11 @@ find_package(OpenGL REQUIRED)
 link_directories(
   "${CPROCESSING_BUILD_DIR}"
   "${freeglut_BUILD_DIR}"
+  "${OSCPACK_BUILD_DIR}"
 )
 
 add_executable(cccolider "src/main.cpp")
+add_dependencies(cccolider oscpack)
 add_dependencies(cccolider cprocessing)
 add_dependencies(cprocessing freeglut)
 
@@ -70,9 +91,10 @@ add_dependencies(cprocessing freeglut)
 
 
 target_include_directories(cccolider PUBLIC
-  "${CPROCESSING_INCLUDE_DIR}"
-    "${OPENGL_INCLUDE_DIRS}"
-    "${freeglut_INCLUDE_DIR}"
+  ${CPROCESSING_INCLUDE_DIR}
+    ${OPENGL_INCLUDE_DIRS}
+    ${freeglut_INCLUDE_DIR}
+    ${OSCPACK_INCLUDE_DIR}
 )
 
 
@@ -89,6 +111,7 @@ if(UNIX)
     ${OPENGL_LIBRARIES}
     "libcprocessing.a"
     "libglut.a"
+    "liboscpack.a"
 )
 endif()
 
@@ -98,9 +121,11 @@ if(WIN32)
     ${OPENGL_LIBRARIES}
     "cprocessing.lib"
     "glut.lib"
+    "oscpack.lib"
   )
 endif()
 
 
 
 ### INSTALL (TODO) ############################################################
+FILE(COPY "${CMAKE_SOURCE_DIR}/assets/start.scd" DESTINATION ${CMAKE_BINARY_DIR})
