@@ -50,6 +50,7 @@ int evaluate(string input) {
     << strdup(input.c_str()) << osc::EndMessage << osc::EndBundle;
 
   transmitSocket.Send(p.Data(), p.Size());
+  return 0;
 }
 
 int close() {
