@@ -1,4 +1,4 @@
-# cccolide
+# ccollide
 supercollider + cprocessing combo
 
 # dependencies
@@ -17,8 +17,8 @@ supercollider + cprocessing combo
 
 # building  (system must be online for the first time)
 
-* ```git clone https://github.com/K0F/cccolide.git```
-* ```cd cccolide```
+* ```git clone https://github.com/K0F/ccollide.git```
+* ```cd ccollide```
 * ```mkdir build```
 * ```cmake ..```
 * ```make -j5```
