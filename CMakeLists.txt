@@ -1,6 +1,18 @@
-project(test)
+project(cccolider)
 
 cmake_minimum_required( VERSION 3.4.0 )
+
+
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+  message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
 
 # Set the build type if it isn't already
 if(NOT CMAKE_BUILD_TYPE)
@@ -14,13 +26,13 @@ include(ExternalProject)
 
 
 ExternalProject_Add(oscpack
- GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
- GIT_TAG "master"
- PREFIX "externals"
- UPDATE_DISCONNECTED 0
- TIMEOUT 10
- ALWAYS 1
-)
+  GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
+  GIT_TAG "master"
+  PREFIX "externals"
+  UPDATE_DISCONNECTED 0
+  TIMEOUT 10
+  ALWAYS 1
+  )
 SET(OSCPACK_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack/")
 SET(OSCPACK_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack-build/")
 MESSAGE(STATUS "ok got cprocessing OSCPACK_INCLUDE_DIR ${OSCPACK_INCLUDE_DIR}")
@@ -29,13 +41,13 @@ MESSAGE(STATUS "ok got cprocessing OSCPACK_BUILD_DIR ${OSCPACK_BUILD_DIR}")
 
 
 ExternalProject_Add(cprocessing
- GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
- GIT_TAG "master"
- PREFIX "externals"
- UPDATE_DISCONNECTED 0
- TIMEOUT 10
- ALWAYS 1
-)
+  GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
+  GIT_TAG "master"
+  PREFIX "externals"
+  UPDATE_DISCONNECTED 0
+  TIMEOUT 10
+  ALWAYS 1
+  )
 SET(CPROCESSING_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing/include/")
 SET(CPROCESSING_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing-build/")
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_INCLUDE_DIR ${CPROCESSING_INCLUDE_DIR}")
@@ -43,13 +55,13 @@ MESSAGE(STATUS "ok got cprocessing CPROCESSING_BUILD_DIR ${CPROCESSING_BUILD_DIR
 
 
 ExternalProject_Add(freeglut
- GIT_REPOSITORY "https://github.com/K0F/freeglut.git"
- GIT_TAG "master"
- PREFIX "externals"
- UPDATE_DISCONNECTED 0
- TIMEOUT 10
- ALWAYS 1
-)
+  GIT_REPOSITORY "https://github.com/K0F/freeglut.git"
+  GIT_TAG "master"
+  PREFIX "externals"
+  UPDATE_DISCONNECTED 0
+  TIMEOUT 10
+  ALWAYS 1
+  )
 SET(freeglut_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/freeglut/include/GL")
 SET(freeglut_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/freeglut-build/lib")
 
@@ -63,7 +75,7 @@ MESSAGE(STATUS "ok got freeglut freeglut_BUILD_DIR ${freeglut_BUILD_DIR}")
 
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-	SET(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/Install" CACHE STRING "Cmake install path" FORCE)
+  SET(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/Install" CACHE STRING "Cmake install path" FORCE)
 endif()
 
 ### OPENGL MODULE FIND #######################################################################
@@ -79,7 +91,7 @@ link_directories(
   "${CPROCESSING_BUILD_DIR}"
   "${freeglut_BUILD_DIR}"
   "${OSCPACK_BUILD_DIR}"
-)
+  )
 
 add_executable(cccolider "src/main.cpp")
 add_dependencies(cccolider oscpack)
@@ -92,15 +104,15 @@ add_dependencies(cprocessing freeglut)
 
 target_include_directories(cccolider PUBLIC
   ${CPROCESSING_INCLUDE_DIR}
-    ${OPENGL_INCLUDE_DIRS}
-    ${freeglut_INCLUDE_DIR}
-    ${OSCPACK_INCLUDE_DIR}
-)
+  ${OPENGL_INCLUDE_DIRS}
+  ${freeglut_INCLUDE_DIR}
+  ${OSCPACK_INCLUDE_DIR}
+  )
 
 
 # LINUX LIBRARIES
 if(UNIX)
-    target_link_libraries(cccolider
+  target_link_libraries(cccolider
     glfw
     X11
     Xext
@@ -112,7 +124,7 @@ if(UNIX)
     "libcprocessing.a"
     "libglut.a"
     "liboscpack.a"
-)
+    )
 endif()
 
 # WINDOWS LIBRARIES
@@ -122,7 +134,7 @@ if(WIN32)
     "cprocessing.lib"
     "glut.lib"
     "oscpack.lib"
-  )
+    )
 endif()
 
 

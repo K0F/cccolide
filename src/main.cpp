@@ -64,13 +64,11 @@ int close() {
 
 int fc;
 bool hit;
-string console;
 
 void setup() {
   size(600, 400, "cccolider");
   start();
   fc = 0;
-  console = "";
   // close();
 }
 
@@ -80,18 +78,22 @@ void draw() {
   } else {
     background(0);
   }
-  stroke(255);
+
+  stroke(255.0);
+
   line(fc++, 0, fc, height);
   fc = fc % width;
 
-  if (fgets(buf, BUFSIZE, fp) != NULL) {
-    // Do whatever you want here...
+  if(fgets(buf, BUFSIZE, fp) != NULL){
     printf("OUTPUT: %s", buf);
   }
 
-  text("CCColider", 30, 10);
-  text("Welcome!", 30, 22);
-  text("by kof", 30, 34);
+  string frames = ("frameNo: ");
+  frames += to_string(fc);
+
+  text("CCColider", 30, 30);
+  text("Welcome!", 30, 45);
+  text(frames.c_str(),30,60);
 
   if (fc % 100 == 0) {
     evaluate("().play;");
