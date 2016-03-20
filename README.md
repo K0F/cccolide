@@ -22,7 +22,7 @@ supercollider + cprocessing combo
 * ```mkdir build```
 * ```cmake ..```
 * ```make -j5```
-* ```./cccollide```
+* ```./ccolide```
 
 Enjoy!
 
