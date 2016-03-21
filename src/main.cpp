@@ -24,6 +24,9 @@ using namespace cprocessing;
 
 FILE *fp;
 char buf[BUFSIZE];
+char outbuff[OUTPUT_BUFFER_SIZE];
+
+string output = "";
 
 int start() {
 
@@ -31,7 +34,7 @@ int start() {
   string arguments = string(" start.scd");
   cmd += arguments;
 
-  if ((fp = popen(cmd.c_str(), "w")) == NULL) {
+  if ((fp = popen(cmd.c_str(), "r")) == NULL) {
     printf("Error opening pipe!\n");
     return -1;
   }
@@ -85,9 +88,20 @@ void draw() {
   line(fc++, 0, fc, height);
   fc = fc % width;
 
-  if (fgets(buf, BUFSIZE, fp) != NULL) {
-    printf("OUTPUT: %s", buf);
+  char line[64];
+  // output = "";
+  if (fgets(line, 64, fp)) {
+    fflush(fp);
+    output += line;
+    output += "\n";
   }
+
+  /*
+    if (fgets(buf, BUFSIZE, fp) != NULL) {
+      outbuff += buf;
+      // printf("OUTPUT: %s", buf);
+    }
+  */
 
   string frames = ("frameNo: ");
   frames += to_string(fc);
@@ -95,6 +109,21 @@ void draw() {
   text("CCColider", 30, 30);
   text("Welcome!", 30, 45);
   text(frames.c_str(), 30, 60);
+
+  int last = 0;
+  int ln_cnt = 0;
+  for (int i = 0; i < output.length(); i++) {
+    if (output[i] == '\n') {
+      string ln = output.substr(last + 1, i);
+
+      text(ln.c_str(), 30, 100 + (ln_cnt * 13));
+      last = i;
+      ln_cnt++;
+    }
+  }
+
+  if (output.length() > 256)
+    output = output.substr(64, output.length());
 
   if (fc % 100 == 0) {
     evaluate("().play;");

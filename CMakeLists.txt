@@ -24,34 +24,28 @@ endif()
 
 include(ExternalProject)
 
+OPTION(ONLINE OFF)
 
+if(ONLINE)
 ExternalProject_Add(oscpack
   GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
   GIT_TAG "master"
   PREFIX "externals"
   UPDATE_DISCONNECTED 0
-  TIMEOUT 10
-  ALWAYS 1
+  TIMEOUT 3
+  ALWAYS 0
   )
-SET(OSCPACK_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack/")
-SET(OSCPACK_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack-build/")
-MESSAGE(STATUS "ok got cprocessing OSCPACK_INCLUDE_DIR ${OSCPACK_INCLUDE_DIR}")
-MESSAGE(STATUS "ok got cprocessing OSCPACK_BUILD_DIR ${OSCPACK_BUILD_DIR}")
 
 
 
-ExternalProject_Add(cprocessing
-  GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
+  ExternalProject_Add(cprocessing
+    GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
   GIT_TAG "master"
   PREFIX "externals"
   UPDATE_DISCONNECTED 0
-  TIMEOUT 10
-  ALWAYS 1
+  TIMEOUT 3
+  ALWAYS 0
   )
-SET(CPROCESSING_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing/include/")
-SET(CPROCESSING_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing-build/")
-MESSAGE(STATUS "ok got cprocessing CPROCESSING_INCLUDE_DIR ${CPROCESSING_INCLUDE_DIR}")
-MESSAGE(STATUS "ok got cprocessing CPROCESSING_BUILD_DIR ${CPROCESSING_BUILD_DIR}")
 
 
 ExternalProject_Add(freeglut
@@ -59,15 +53,39 @@ ExternalProject_Add(freeglut
   GIT_TAG "master"
   PREFIX "externals"
   UPDATE_DISCONNECTED 0
-  TIMEOUT 10
-  ALWAYS 1
+  TIMEOUT 3
+  ALWAYS 0
   )
+else()
+  ExternalProject_Add(oscpack
+    PREFIX "externals"
+  )
+  ExternalProject_Add(cprocessing
+    PREFIX "externals"
+  )
+  ExternalProject_Add(freeglut
+    PREFIX "externals"
+  )
+endif()
+
+
+SET(OSCPACK_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack/")
+SET(OSCPACK_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack-build/")
+MESSAGE(STATUS "ok got cprocessing OSCPACK_INCLUDE_DIR ${OSCPACK_INCLUDE_DIR}")
+MESSAGE(STATUS "ok got cprocessing OSCPACK_BUILD_DIR ${OSCPACK_BUILD_DIR}")
+
+SET(CPROCESSING_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing/include/")
+SET(CPROCESSING_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing-build/")
+MESSAGE(STATUS "ok got cprocessing CPROCESSING_INCLUDE_DIR ${CPROCESSING_INCLUDE_DIR}")
+MESSAGE(STATUS "ok got cprocessing CPROCESSING_BUILD_DIR ${CPROCESSING_BUILD_DIR}")
+
 SET(freeglut_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/freeglut/include/GL")
 SET(freeglut_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/freeglut-build/lib")
 
 # SET(GLUT_ROOT_PATH ${freeglut_INCLUDE_DIR})
 MESSAGE(STATUS "ok got freeglut freeglut_INCLUDE_DIR ${freeglut_INCLUDE_DIR}")
 MESSAGE(STATUS "ok got freeglut freeglut_BUILD_DIR ${freeglut_BUILD_DIR}")
+
 
 ###################################################################################################
 ###################################################################################################
@@ -106,6 +124,7 @@ target_include_directories(cccolider PUBLIC
   ${CPROCESSING_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIRS}
   ${freeglut_INCLUDE_DIR}
+  "${OSCPACK_INCLUDE_DIR}"
   "${OSCPACK_INCLUDE_DIR}/osc"
   "${OSCPACK_INCLUDE_DIR}/ip"
   )
@@ -121,6 +140,7 @@ if(UNIX)
     Xxf86vm
     Xi
     Xrandr
+    pthread
     ${OPENGL_LIBRARIES}
     "libcprocessing.a"
     "libglut.a"
