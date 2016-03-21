@@ -24,16 +24,16 @@ endif()
 
 include(ExternalProject)
 
-OPTION(ONLINE OFF)
+OPTION(ONLINE ON)
 
 if(ONLINE)
 ExternalProject_Add(oscpack
   GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
   GIT_TAG "master"
   PREFIX "externals"
-  UPDATE_DISCONNECTED 0
-  TIMEOUT 3
-  ALWAYS 0
+  UPDATE_DISCONNECTED 1
+  TIMEOUT 10
+  ALWAYS 1
   )
 
 
@@ -42,9 +42,9 @@ ExternalProject_Add(oscpack
     GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
   GIT_TAG "master"
   PREFIX "externals"
-  UPDATE_DISCONNECTED 0
-  TIMEOUT 3
-  ALWAYS 0
+  UPDATE_DISCONNECTED 1
+  TIMEOUT 10
+  ALWAYS 1
   )
 
 
@@ -52,9 +52,9 @@ ExternalProject_Add(freeglut
   GIT_REPOSITORY "https://github.com/K0F/freeglut.git"
   GIT_TAG "master"
   PREFIX "externals"
-  UPDATE_DISCONNECTED 0
-  TIMEOUT 3
-  ALWAYS 0
+  UPDATE_DISCONNECTED 1
+  TIMEOUT 10
+  ALWAYS 1
   )
 else()
   ExternalProject_Add(oscpack
