@@ -24,9 +24,6 @@ endif()
 
 include(ExternalProject)
 
-OPTION(ONLINE ON)
-
-if(ONLINE)
 ExternalProject_Add(oscpack
   GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
   GIT_TAG "master"
@@ -56,17 +53,6 @@ ExternalProject_Add(freeglut
   TIMEOUT 10
   ALWAYS 1
   )
-else()
-  ExternalProject_Add(oscpack
-    PREFIX "externals"
-  )
-  ExternalProject_Add(cprocessing
-    PREFIX "externals"
-  )
-  ExternalProject_Add(freeglut
-    PREFIX "externals"
-  )
-endif()
 
 
 SET(OSCPACK_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack/")
