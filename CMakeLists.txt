@@ -56,6 +56,12 @@ SET(CPROCESSING_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing-build/"
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_INCLUDE_DIR ${CPROCESSING_INCLUDE_DIR}")
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_BUILD_DIR ${CPROCESSING_BUILD_DIR}")
 
+SET(FREEGLUT_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing/build/externals/src/freeglut/include/")
+SET(FREEGLUT_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing/build/externals/src/freegut-build/lib")
+MESSAGE(STATUS "ok got cprocessing FREEGLUT_INCLUDE_DIR ${FREEGLUT_INCLUDE_DIR}")
+MESSAGE(STATUS "ok got cprocessing FREEGLUT_BUILD_DIR ${FREEGLUT_BUILD_DIR}")
+
+
 
 ###################################################################################################
 ###################################################################################################
@@ -76,19 +82,16 @@ find_package(OpenGL REQUIRED)
 
 
 link_directories(
-  "${CPROCESSING_BUILD_DIR}"
-  "${OSCPACK_BUILD_DIR}"
+  ${CPROCESSING_BUILD_DIR}
+  ${OSCPACK_BUILD_DIR}
+  ${FREEGLUT_BUILD_DIR}
+  ${OPENGL_LIBRARIES} 
   )
 
 ### LINKING ############################################################
 
-if(UNIX)
-  include_directories(ccollider
-    ${OPENGL_INCLUDE_DIRS}
-    )
-endif()
-
 include_directories(ccollider PUBLIC
+  ${FREEGLUT_INCLUDE_DIR}
   ${CPROCESSING_INCLUDE_DIR}
   ${OSCPACK_INCLUDE_DIR}
   "${OSCPACK_INCLUDE_DIR}/osc"
@@ -103,18 +106,29 @@ add_dependencies(ccollider cprocessing)
 # LINUX LIBRARIES
 if(UNIX)
   target_link_libraries(ccollider
-   ${OPENGL_LIBRARIES}
+    glfw
+      X11
+      Xext
+      Xmu
+      Xxf86vm
+      Xi
+      Xrandr
+      ${OPENGL_LIBRARIES}
+    ${OPENGL_gl_LIBRARY}
     "libcprocessing.a"
     "liboscpack.a"
+    "libglut.a"
     )
 endif()
 
 # WINDOWS LIBRARIES
 if(WIN32)
   target_link_libraries(ccollider
-    ${OPENGL_LIBRARIES}
+    ${OPENGL_gl_LIBRARY}
+      ${OPENGL_LIBRARIES}
     "cprocessing.lib"
     "oscpack.lib"
+    "glut.lib"
     )
 endif()
 
