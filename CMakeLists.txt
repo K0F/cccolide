@@ -1,4 +1,4 @@
-project(cccolider)
+project(ccollider)
 
 cmake_minimum_required( VERSION 3.4.0 )
 
@@ -35,8 +35,8 @@ ExternalProject_Add(oscpack
 
 
 
-  ExternalProject_Add(cprocessing
-    GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
+ExternalProject_Add(cprocessing
+  GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
   GIT_TAG "master"
   PREFIX "externals"
   UPDATE_DISCONNECTED 1
@@ -97,18 +97,17 @@ link_directories(
   "${OSCPACK_BUILD_DIR}"
   )
 
-add_executable(cccolider "src/main.cpp")
-add_dependencies(cccolider oscpack)
-add_dependencies(cccolider cprocessing)
+add_executable(ccollider "src/main.cpp")
+add_dependencies(ccollider oscpack)
+add_dependencies(ccollider cprocessing)
 add_dependencies(cprocessing freeglut)
 
 
 ### LINKING ############################################################
 
 
-target_include_directories(cccolider PUBLIC
+target_include_directories(ccollider PUBLIC
   ${CPROCESSING_INCLUDE_DIR}
-  ${OPENGL_INCLUDE_DIRS}
   ${freeglut_INCLUDE_DIR}
   "${OSCPACK_INCLUDE_DIR}"
   "${OSCPACK_INCLUDE_DIR}/osc"
@@ -118,7 +117,10 @@ target_include_directories(cccolider PUBLIC
 
 # LINUX LIBRARIES
 if(UNIX)
-  target_link_libraries(cccolider
+  target_include_directories(ccollider
+    ${OPENGL_INCLUDE_DIRS}
+    )
+  target_link_libraries(ccollider
     glfw
     X11
     Xext
@@ -136,7 +138,7 @@ endif()
 
 # WINDOWS LIBRARIES
 if(WIN32)
-  target_link_libraries(cccolider
+  target_link_libraries(ccollider
     ${OPENGL_LIBRARIES}
     "cprocessing.lib"
     "glut.lib"
