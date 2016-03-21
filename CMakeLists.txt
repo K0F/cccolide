@@ -97,12 +97,6 @@ link_directories(
   "${OSCPACK_BUILD_DIR}"
   )
 
-add_executable(ccollider "src/main.cpp")
-add_dependencies(ccollider oscpack)
-add_dependencies(ccollider cprocessing)
-add_dependencies(cprocessing freeglut)
-
-
 ### LINKING ############################################################
 
 
@@ -113,6 +107,12 @@ target_include_directories(ccollider PUBLIC
   "${OSCPACK_INCLUDE_DIR}/osc"
   "${OSCPACK_INCLUDE_DIR}/ip"
   )
+
+add_executable(ccollider "src/main.cpp")
+add_dependencies(ccollider oscpack)
+add_dependencies(ccollider cprocessing)
+add_dependencies(cprocessing freeglut)
+
 
 
 # LINUX LIBRARIES
