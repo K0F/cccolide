@@ -28,7 +28,7 @@ ExternalProject_Add(oscpack
   GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
   GIT_TAG "master"
   PREFIX "externals"
-  UPDATE_DISCONNECTED 1
+  UPDATE_DISCONNECTED 0
   TIMEOUT 10
   ALWAYS 1
   )
@@ -39,20 +39,11 @@ ExternalProject_Add(cprocessing
   GIT_REPOSITORY "https://github.com/K0F/cprocessing.git"
   GIT_TAG "master"
   PREFIX "externals"
-  UPDATE_DISCONNECTED 1
+  UPDATE_DISCONNECTED 0
   TIMEOUT 10
   ALWAYS 1
   )
 
-
-ExternalProject_Add(freeglut
-  GIT_REPOSITORY "https://github.com/K0F/freeglut.git"
-  GIT_TAG "master"
-  PREFIX "externals"
-  UPDATE_DISCONNECTED 1
-  TIMEOUT 10
-  ALWAYS 1
-  )
 
 
 SET(OSCPACK_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/oscpack/")
@@ -64,13 +55,6 @@ SET(CPROCESSING_INCLUDE_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing/inclu
 SET(CPROCESSING_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/cprocessing-build/")
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_INCLUDE_DIR ${CPROCESSING_INCLUDE_DIR}")
 MESSAGE(STATUS "ok got cprocessing CPROCESSING_BUILD_DIR ${CPROCESSING_BUILD_DIR}")
-
-SET(freeglut_INCLUDE_DIR "${CMAKE_INCLUDE_DIR}/externals/src/freeglut/include/GL")
-SET(freeglut_BUILD_DIR "${CMAKE_BINARY_DIR}/externals/src/freeglut-build/lib")
-
-# SET(GLUT_ROOT_PATH ${freeglut_INCLUDE_DIR})
-MESSAGE(STATUS "ok got freeglut freeglut_INCLUDE_DIR ${freeglut_INCLUDE_DIR}")
-MESSAGE(STATUS "ok got freeglut freeglut_BUILD_DIR ${freeglut_BUILD_DIR}")
 
 
 ###################################################################################################
@@ -93,17 +77,20 @@ find_package(OpenGL REQUIRED)
 
 link_directories(
   "${CPROCESSING_BUILD_DIR}"
-  "${freeglut_BUILD_DIR}"
   "${OSCPACK_BUILD_DIR}"
   )
 
 ### LINKING ############################################################
 
+if(UNIX)
+  include_directories(ccollider
+    ${OPENGL_INCLUDE_DIRS}
+    )
+endif()
 
-target_include_directories(ccollider PUBLIC
+include_directories(ccollider PUBLIC
   ${CPROCESSING_INCLUDE_DIR}
-  ${freeglut_INCLUDE_DIR}
-  "${OSCPACK_INCLUDE_DIR}"
+  ${OSCPACK_INCLUDE_DIR}
   "${OSCPACK_INCLUDE_DIR}/osc"
   "${OSCPACK_INCLUDE_DIR}/ip"
   )
@@ -111,27 +98,13 @@ target_include_directories(ccollider PUBLIC
 add_executable(ccollider "src/main.cpp")
 add_dependencies(ccollider oscpack)
 add_dependencies(ccollider cprocessing)
-add_dependencies(cprocessing freeglut)
-
 
 
 # LINUX LIBRARIES
 if(UNIX)
-  target_include_directories(ccollider
-    ${OPENGL_INCLUDE_DIRS}
-    )
   target_link_libraries(ccollider
-    glfw
-    X11
-    Xext
-    Xmu
-    Xxf86vm
-    Xi
-    Xrandr
-    pthread
-    ${OPENGL_LIBRARIES}
+   ${OPENGL_LIBRARIES}
     "libcprocessing.a"
-    "libglut.a"
     "liboscpack.a"
     )
 endif()
@@ -141,7 +114,6 @@ if(WIN32)
   target_link_libraries(ccollider
     ${OPENGL_LIBRARIES}
     "cprocessing.lib"
-    "glut.lib"
     "oscpack.lib"
     )
 endif()
