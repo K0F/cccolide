@@ -24,6 +24,9 @@ endif()
 
 include(ExternalProject)
 
+OPTION(ONLINE OFF)
+
+if(ONLINE)
 ExternalProject_Add(oscpack
   GIT_REPOSITORY "https://github.com/K0F/oscpack.git"
   GIT_TAG "master"
@@ -43,6 +46,10 @@ ExternalProject_Add(cprocessing
   TIMEOUT 10
   ALWAYS 1
   )
+else()
+  ExternalProject_Add(oscpack PREFIX "externals")
+  ExternalProject_Add(cprocessing PREFIX "externals")
+endif()
 
 
 

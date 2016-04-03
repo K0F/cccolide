@@ -34,7 +34,7 @@ int start() {
   string arguments = string(" start.scd");
   cmd += arguments;
 
-  if ((fp = popen(cmd.c_str(), "r")) == NULL) {
+  if ((fp = popen(cmd.c_str(), "w")) == NULL) {
     printf("Error opening pipe!\n");
     return -1;
   }
@@ -106,15 +106,15 @@ void draw() {
   string frames = ("frameNo: ");
   frames += to_string(fc);
 
-  text("CCColider", 30, 30);
-  text("Welcome!", 30, 45);
-  text(frames.c_str(), 30, 60);
+  // text("CCColider", 30, 30);
+  // text("Welcome!", 30, 45);
+  // text(frames.c_str(), 30, 60);
 
   int last = 0;
   int ln_cnt = 0;
   for (int i = 0; i < output.length(); i++) {
     if (output[i] == '\n') {
-      string ln = output.substr(last + 1, i);
+      string ln = output.substr(last, i);
 
       text(ln.c_str(), 30, 100 + (ln_cnt * 13));
       last = i;
@@ -129,4 +129,10 @@ void draw() {
     evaluate("().play;");
     evaluate("'bang!'.postln;");
   }
+}
+
+void keyPressed() {
+  std::cout << key << '\n';
+  output += key;
+  output += '\n';
 }
